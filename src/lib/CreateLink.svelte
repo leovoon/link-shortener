@@ -1,31 +1,133 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import copy from 'copy-to-clipboard';
-	let success = true;
-	let slug = 'mylinkforexample';
+	import { enhance } from '$lib/action/form';
+	import debounce from 'lodash.debounce';
+	import { fly, fade } from 'svelte/transition';
+	import { flipboard } from '$lib/animation/flipboard';
+
+	let successCreated = false;
+	let slug = '';
 	let link = '';
+	let status = '';
+	let slugUsed = false;
 	const url = $page.url.origin;
+
+	const handleInput = debounce((e) => {
+		slugValidate();
+	}, 1000);
+
+	async function slugValidate() {
+		//sanitized slug
+		slug = slug.replace(/[^a-zA-Z0-9 ]/g, '');
+		if (slug === '') {
+			status = 'No special characters allowed';
+			return;
+		}
+		const res = await fetch(`${url}/api/slug-check/${slug}`);
+		const { used } = await res.json();
+		slugUsed = used;
+		if (slugUsed) {
+			status = 'slug already in use';
+		} else {
+			status = 'slug name ok';
+		}
+	}
+
+	function handleCopy() {
+		copy(`${url}/${slug}`);
+		status = 'Copied!';
+	}
 </script>
 
-{#if success}
-	<div class="flex">
-		<h1>{`${url}/${slug}`}</h1>
-		<input type="button" value="Copy Link" on:click={() => copy(`${url}/${slug}`)} />
-	</div>
-	<input
-		type="button"
-		value="Reset"
-		onClick={() => {
-			slug = '';
-			link = '';
-		}}
-	/>
-{/if}
+{#key status}
+	<h2 in:fly={{ y: -20 }}>{status}</h2>
+{/key}
+<section>
+	{#if successCreated}
+		<div in:fly={{ x: 100, delay: 400 }} out:fly class="container">
+			<h3 transition:flipboard|local={{ delay: 300, duration: 2000 }}>{`${url}/${slug}`}</h3>
+			<input type="button" value="Copy Link" on:click={handleCopy} />
+			<input
+				type="button"
+				value="Reset"
+				on:click={() => {
+					slug = '';
+					link = '';
+					status = '';
+					successCreated = false;
+				}}
+			/>
+		</div>
+	{/if}
+	{#if !successCreated}
+		<form
+			class="container"
+			in:fly={{ x: -100, delay: 400 }}
+			out:fly={{ x: -100 }}
+			use:enhance={{
+				pending: () => {
+					status = 'Generating...';
+				},
+				result: async (res, form) => {
+					const created = await res.json();
+					console.log(created);
+					if (created.slug === slug) {
+						successCreated = true;
+						status = 'Done ✔️';
+					}
+					form.reset();
+				}
+			}}
+			action="/api/create-url"
+			method="post"
+		>
+			<label for="slug">Give a fancy name</label>
+
+			<input
+				class:slug-used={slugUsed}
+				required
+				type="text"
+				name="slug"
+				pattern="^[a-zA-Z0-9]+$"
+				on:input={handleInput}
+				bind:value={slug}
+				placeholder="/yourfancyname"
+			/>
+			{#if slugUsed}<sub>Name used.</sub>{/if}
+
+			<label for="slug">Your link</label>
+			<input
+				required
+				type="url"
+				name="url"
+				bind:value={link}
+				placeholder="https://long-long-secret.com"
+			/>
+			<input type="submit" value="Create Short Link" />
+		</form>
+	{/if}
+</section>
 
 <style>
-	.flex {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+	section {
+		position: relative;
+		max-width: 640px;
+		width: 90vw;
+		height: 360px;
+		max-height: 65vh;
+		display: grid;
+		margin: 0 auto;
+		place-items: center;
+		overflow-x: none;
+	}
+	.container {
+		position: absolute;
+		width: inherit;
+	}
+
+	sub {
+		color: #f04b4b;
+		padding-left: 20px;
 	}
 </style>

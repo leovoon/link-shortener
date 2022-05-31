@@ -14,8 +14,8 @@ datasource db {
 }
 
 model ShortLink {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime? @default(now())
 
   url String @db.VarChar(2000)
 

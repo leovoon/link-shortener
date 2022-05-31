@@ -4,12 +4,14 @@ specifiers:
   '@prisma/client': ^3.14.0
   '@sveltejs/adapter-auto': next
   '@sveltejs/kit': next
+  '@types/lodash.debounce': ^4.0.7
   '@typescript-eslint/eslint-plugin': ^5.10.1
   '@typescript-eslint/parser': ^5.10.1
   copy-to-clipboard: ^3.3.1
   eslint: ^8.12.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-svelte3: ^4.0.0
+  lodash.debounce: ^4.0.8
   prettier: ^2.5.1
   prettier-plugin-svelte: ^2.5.0
   prisma: ^3.14.0
@@ -26,11 +28,13 @@ dependencies:
 devDependencies:
   '@sveltejs/adapter-auto': 1.0.0-next.50
   '@sveltejs/kit': 1.0.0-next.347_svelte@3.48.0
+  '@types/lodash.debounce': 4.0.7
   '@typescript-eslint/eslint-plugin': 5.26.0_3538258888b78689808cec7bffc2237a
   '@typescript-eslint/parser': 5.26.0_eslint@8.16.0+typescript@4.6.4
   eslint: 8.16.0
   eslint-config-prettier: 8.5.0_eslint@8.16.0
   eslint-plugin-svelte3: 4.0.0_eslint@8.16.0+svelte@3.48.0
+  lodash.debounce: 4.0.8
   prettier: 2.6.2
   prettier-plugin-svelte: 2.7.0_prettier@2.6.2+svelte@3.48.0
   prisma: 3.14.0
@@ -246,6 +250,16 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/lodash.debounce/4.0.7:
+    resolution: {integrity: sha512-X1T4wMZ+gT000M2/91SYj0d/7JfeNZ9PeeOldSNoE/lunLeQXKvkmIumI29IaKMotU/ln/McOIvgzZcQ/3TrSA==}
+    dependencies:
+      '@types/lodash': 4.14.182
+    dev: true
+
+  /@types/lodash/4.14.182:
+    resolution: {integrity: sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==}
     dev: true
 
   /@types/node/17.0.36:
@@ -1375,6 +1389,10 @@ packages:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+    dev: true
+
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
     dev: true
 
   /lodash.merge/4.6.2:

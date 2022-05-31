@@ -1,0 +1,121 @@
+@import url(https://fonts.googleapis.com/css?family=Sniglet|Raleway:900);
+
+body,
+html {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: 'Sniglet', cursive;
+	background-color: lightblue;
+	overflow-x: hidden;
+}
+
+header {
+	background-color: #fefefe;
+	background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238e9cb3' fill-opacity='0.08'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3 {
+	font-weight: normal;
+	font-family: 'Raleway', sans-serif;
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+	word-break: break-all;
+}
+
+h1 {
+	padding-block: 80px;
+	font-size: clamp(4rem, 14vw, 6rem);
+	background: -webkit-linear-gradient(45deg, #09009f, #00ff95 80%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+h2 {
+	font-size: clamp(1.5rem, 4.5vw, 3rem);
+	height: 80px;
+	display: grid;
+	place-content: center;
+	margin-top: -80px;
+	background: -webkit-linear-gradient(45deg, #696969, #d3d3d3 70%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+h3 {
+	font-size: clamp(4rem, 14vw, 6rem);
+	font-size: 1.5em;
+	margin-block: 80px;
+	background: -webkit-linear-gradient(150deg, #1b44e8, #00cc77 80%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+form {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 640px;
+	color: white;
+	padding-inline: 1ch;
+	top: 50px;
+}
+label,
+input {
+	display: block;
+	margin-top: 10px;
+}
+input {
+	width: 100%;
+	border: none;
+	border-radius: 20px;
+	outline: none;
+	padding-block: 10px;
+	padding-inline: 20px;
+	font-family: 'Sniglet', cursive;
+	font-size: 1em;
+	color: #676767;
+	transition: border 0.5s;
+	-webkit-transition: border 0.5s;
+	-moz-transition: border 0.5s;
+	-o-transition: border 0.5s;
+	border: solid 3px #98d4f3;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+input.slug-used,
+input.slug-used:focus {
+	border: solid 3px #f99a9a;
+}
+
+input:focus {
+	border: solid 3px #77bde0;
+}
+
+input[type='submit'],
+input[type='button'] {
+	background-color: #e58f0e;
+	color: white;
+	height: 50px;
+	cursor: pointer;
+	margin-top: 30px;
+	font-size: 1.29em;
+	font-family: 'Sniglet', cursive;
+	-webkit-transition: background-color 0.5s;
+	-moz-transition: background-color 0.5s;
+	-o-transition: background-color 0.5s;
+	transition: background-color 0.5s;
+}
+input[type='submit']:hover,
+input[type='button']:hover {
+	background-color: #c87b08;
+}
+label {
+	font-size: 1.5em;
+	margin-top: 20px;
+	padding-left: 20px;
+}

@@ -3,7 +3,6 @@ import type { Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }): Promise<Response> => {
 	if (event.url.pathname.startsWith('/api/') || event.url.pathname === '/') {
 		// intercept the request and redirect to the root
-		event.url.pathname = '/';
 		return resolve(event);
 	}
 
