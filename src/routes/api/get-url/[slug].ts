@@ -25,6 +25,9 @@ export async function get(event: RequestEvent): Promise<RequestHandlerOutput<Res
 	if (!data) {
 		return {
 			status: 404,
+			headers: {
+				'cache-control': 'stale-while-revalidate, max-age=100000000'
+			},
 			body: {
 				error: 'Not Found',
 				message: 'The requested short link does not exist.'
