@@ -20,6 +20,7 @@
 	async function slugValidate() {
 		//sanitized slug
 		slug = slug.replace(/[^a-zA-Z0-9 ]/g, '');
+		slug = slug.trim();
 		if (slug === '') {
 			status = 'No special characters allowed';
 			return;
@@ -94,7 +95,7 @@
 				bind:value={slug}
 				placeholder="/yourfancyname"
 			/>
-			{#if slugUsed}<sub>Name used.</sub>{/if}
+			{#if slugUsed && slug !== ''}<sub>Name used.</sub>{/if}
 
 			<label for="slug">Your link</label>
 			<input
