@@ -11,6 +11,7 @@
 	let link = '';
 	let status = '';
 	let slugUsed = false;
+	let invalidChar = false;
 	const url = $page.url.origin;
 
 	const handleInput = debounce((e) => {
@@ -18,13 +19,18 @@
 	}, 1000);
 
 	async function slugValidate() {
-		//sanitized slug
-		slug = slug.replace(/[^a-zA-Z0-9 ]/g, '');
 		slug = slug.trim();
 		if (slug === '') {
-			status = 'No special characters allowed';
+			status = '';
+			invalidChar = false;
 			return;
 		}
+		if (/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(slug)) {
+			status = 'No special characters allowed';
+			invalidChar = true;
+			return;
+		}
+		invalidChar = false;
 		const res = await fetch(`${url}/api/slug-check/${slug}`);
 		const { used } = await res.json();
 		slugUsed = used;
@@ -33,6 +39,7 @@
 		} else {
 			status = 'slug name ok';
 		}
+		return;
 	}
 
 	function handleCopy() {
@@ -86,7 +93,7 @@
 			<label for="slug">Give a fancy name</label>
 
 			<input
-				class:slug-used={slugUsed}
+				class:slug-used={slugUsed || invalidChar}
 				required
 				type="text"
 				name="slug"
@@ -96,6 +103,7 @@
 				placeholder="/yourfancyname"
 			/>
 			{#if slugUsed && slug !== ''}<sub>Name used.</sub>{/if}
+			{#if invalidChar && slug !== ''}<sub>Special characters not allowed.</sub>{/if}
 
 			<label for="slug">Your link</label>
 			<input
@@ -105,7 +113,7 @@
 				bind:value={link}
 				placeholder="https://long-long-secret.com"
 			/>
-			<input type="submit" value="Create Short Link" />
+			<input disabled={slugUsed || invalidChar} type="submit" value="Create Short Link" />
 		</form>
 	{/if}
 </section>
