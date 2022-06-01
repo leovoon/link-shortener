@@ -1,3 +1,7 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script lang="ts">
 	import CreateLink from '$lib/CreateLink.svelte';
 	import Footer from '$lib/Footer.svelte';
