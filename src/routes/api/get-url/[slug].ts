@@ -25,9 +25,6 @@ export async function get(event: RequestEvent): Promise<RequestHandlerOutput<Res
 	if (!data) {
 		return {
 			status: 404,
-			headers: {
-				'cache-control': 'stale-while-revalidate, max-age=100000000'
-			},
 			body: {
 				error: 'Not Found',
 				message: 'The requested short link does not exist.'
@@ -36,9 +33,11 @@ export async function get(event: RequestEvent): Promise<RequestHandlerOutput<Res
 	}
 
 	return {
-		// headers: {
-		// 	'cache-control': 'stale-while-revalidate, max-age=100000000'
-		// },
+		headers: {
+			'content-type': 'application/json',
+			'access-control-allow-origin': '*',
+			'cache-control': 'stale-while-revalidate, max-age=100000000'
+		},
 		status: 200,
 		body: {
 			data
