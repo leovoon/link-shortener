@@ -28,8 +28,9 @@
 		position: relative;
 		border-top: 1px solid darkgray;
 		margin-top: 4em;
+		justify-content: center;
 		display: flex;
-		max-width: 640px;
+		width: 100vw;
 		color: gray;
 	}
 
@@ -43,6 +44,7 @@
 
 	.wrapper {
 		width: 100%;
+		max-width: 640px;
 		padding-inline: 10px;
 		padding-block: 1rem;
 		font-size: 0.875rem;
