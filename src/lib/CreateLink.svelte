@@ -26,7 +26,6 @@
 			return;
 		}
 		if (/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(slug)) {
-			status = 'No special characters allowed';
 			invalidChar = true;
 			return;
 		}
@@ -102,8 +101,8 @@
 				bind:value={slug}
 				placeholder="/yourfancyname"
 			/>
-			{#if slugUsed && slug !== ''}<sub>Name used.</sub>{/if}
-			{#if invalidChar && slug !== ''}<sub>Special characters not allowed.</sub>{/if}
+			{#if slugUsed && slug !== ''}<sub>Slug name used.</sub>{/if}
+			{#if invalidChar && slug !== ''}<sub>Spaces or special characters not allowed.</sub>{/if}
 
 			<label for="slug">Your link</label>
 			<input
