@@ -1,38 +1,130 @@
-# create-svelte
+<div id="top"></div>
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/leovoon/link-shortener">
+    <img src="pendek.png" alt="Logo" width="80" height="90" >
+  </a>
+   <br />
 
-## Creating a project
+<h3 align="center"><b>Pendek</b></h3>
 
-If you're seeing this, you've probably already done this step. Congrats!
+  <p align="center">
+   Link Shortener
+    <br />
+    <br />
+    <a href="https://pendek.netlify.app">View Demo</a>
+    ·
+    <a href="https://github.com/leovoon/link-shortener/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/leovoon/link-shortener/issues">Request Feature</a>
+  </p>
+</div>
 
-```bash
-# create a new project in the current directory
-npm init svelte
+<div align="center">
 
-# create a new project in my-app
-npm init svelte my-app
-```
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/leovoon/link-shortener.svg)](https://github.com/leovoon/link-shortener/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/leovoon/link-shortener.svg)](https://github.com/leovoon/link-shortener)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## Developing
+</div>
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-```bash
-npm run dev
+<!-- ABOUT THE PROJECT -->
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## About The Project
 
-## Building
+_Pendek_ means short in Malay. Turn your link into a shorter link.
 
-To create a production version of your app:
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-```bash
-npm run build
-```
+### Built With
 
-You can preview the production build with `npm run preview`.
+- [SvelteKit](https://kit.svelte.dev/)
+- [Prisma](https://www.prisma.io/)
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
+
+## Getting Started
+
+To get a local copy up and running follow these simple example steps.
+
+- npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/leovoon/link-shortener.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+   <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- USAGE EXAMPLES -->
+
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+Any contributions you make are **greatly appreciated**.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- LICENSE -->
+
+## License
+
+Distributed under the MIT License.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- ACKNOWLEDGMENTS -->
+
+## Acknowledgments
+
+- [lihautan](https://twitter.com/lihautan/status/1327630230018682880) Flipboard effect
+- [TheoBr](https://github.com/TheoBr/joltik) Inspired by his NextJs version
+
+<p align="right">(<a href="#top">back to top</a>)</p>
