@@ -6,7 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
 
-	let successCreated = false;
+	let successCreated = true;
 	let slug = '';
 	let link = '';
 	let status = '';
@@ -54,7 +54,7 @@
 	{#if successCreated}
 		<div in:fly={{ x: 100, delay: 400 }} out:fly class="container">
 			<h3 transition:flipboard|local={{ delay: 300, duration: 2000 }}>{`${url}/${slug}`}</h3>
-			<div style:max-width="640px" style:min-width="60vw">
+			<div style:max-width="640px" style:min-width="60vw" style:margin="0 auto">
 				<input type="button" value="Copy Link" on:click={handleCopy} />
 				<input
 					type="button"
@@ -136,8 +136,6 @@
 	.container {
 		position: absolute;
 		width: inherit;
-		display: grid;
-		justify-items: center;
 	}
 
 	sub {
