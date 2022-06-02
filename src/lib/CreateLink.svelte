@@ -6,7 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
 
-	let successCreated = true;
+	let successCreated = false;
 	let slug = '';
 	let link = '';
 	let status = '';
