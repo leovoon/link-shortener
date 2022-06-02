@@ -3,7 +3,7 @@
 	import copy from 'copy-to-clipboard';
 	import { enhance } from '$lib/action/form';
 	import debounce from 'lodash.debounce';
-	import { fly, fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
 
 	let successCreated = false;
@@ -14,7 +14,7 @@
 	let invalidChar = false;
 	const url = $page.url.origin;
 
-	const handleInput = debounce((e) => {
+	const handleInput = debounce(() => {
 		slugValidate();
 	}, 1000);
 
@@ -25,7 +25,7 @@
 			invalidChar = false;
 			return;
 		}
-		if (/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(slug)) {
+		if (/[ `!@#$%^&*()_+=[\]{};':"\\|,.<>/?~]/.test(slug)) {
 			invalidChar = true;
 			return;
 		}
@@ -55,17 +55,17 @@
 		<div in:fly={{ x: 100, delay: 400 }} out:fly class="container">
 			<h3 transition:flipboard|local={{ delay: 300, duration: 2000 }}>{`${url}/${slug}`}</h3>
 			<div style:max-width="640px" style:min-width="60vw">
-			<input type="button" value="Copy Link" on:click={handleCopy} />
-			<input
-				type="button"
-				value="Reset"
-				on:click={() => {
-					slug = '';
-					link = '';
-					status = '';
-					successCreated = false;
-				}}
-			/>
+				<input type="button" value="Copy Link" on:click={handleCopy} />
+				<input
+					type="button"
+					value="Reset"
+					on:click={() => {
+						slug = '';
+						link = '';
+						status = '';
+						successCreated = false;
+					}}
+				/>
 			</div>
 		</div>
 	{/if}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-export function flipboard(node: HTMLHeadingElement, params: any) {
+export function flipboard(node: HTMLHeadingElement, params: Record<string, number>) {
 	const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 	const text = node.textContent?.trim();
 
