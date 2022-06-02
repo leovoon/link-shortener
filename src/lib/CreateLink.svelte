@@ -71,7 +71,6 @@
 	{/if}
 	{#if !successCreated}
 		<form
-			class="container"
 			in:fly={{ x: -100, delay: 400 }}
 			out:fly={{ x: -100 }}
 			use:enhance={{
