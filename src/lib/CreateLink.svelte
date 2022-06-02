@@ -54,6 +54,7 @@
 	{#if successCreated}
 		<div in:fly={{ x: 100, delay: 400 }} out:fly class="container">
 			<h3 transition:flipboard|local={{ delay: 300, duration: 2000 }}>{`${url}/${slug}`}</h3>
+			<div style:max-width="640px" style:min-width="60vw">
 			<input type="button" value="Copy Link" on:click={handleCopy} />
 			<input
 				type="button"
@@ -65,6 +66,7 @@
 					successCreated = false;
 				}}
 			/>
+			</div>
 		</div>
 	{/if}
 	{#if !successCreated}
@@ -131,6 +133,8 @@
 	.container {
 		position: absolute;
 		width: inherit;
+		display: grid;
+		justify-items: center;
 	}
 
 	sub {

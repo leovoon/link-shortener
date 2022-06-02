@@ -3,6 +3,7 @@
 body,
 html {
 	height: 100%;
+	min-height: 100vh;
 	padding: 0;
 	margin: 0;
 	font-family: 'Sniglet', cursive;
@@ -48,7 +49,7 @@ h2 {
 h3 {
 	font-size: clamp(4rem, 14vw, 6rem);
 	font-size: 1.5em;
-	margin-block: 80px;
+	margin-block: 60px;
 	background: -webkit-linear-gradient(150deg, #1b44e8, #00cc77 80%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
