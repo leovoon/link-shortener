@@ -132,9 +132,14 @@
 		place-items: center;
 		overflow-x: none;
 	}
+	form {
+		position: absolute;
+	}
 	.container {
 		position: absolute;
 		width: inherit;
+		display: grid;
+		place-items: center;
 	}
 
 	sub {
