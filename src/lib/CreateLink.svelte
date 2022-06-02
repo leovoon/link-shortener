@@ -97,13 +97,15 @@
 				required
 				type="text"
 				name="slug"
-				pattern="^[a-zA-Z0-9]+$"
+				pattern="^[a-zA-Z0-9-]+$"
 				on:input={handleInput}
 				bind:value={slug}
 				placeholder="/yourfancyname"
 			/>
 			{#if slugUsed && slug !== ''}<sub>Slug name used.</sub>{/if}
-			{#if invalidChar && slug !== ''}<sub>Spaces or special characters not allowed.</sub>{/if}
+			{#if invalidChar && slug !== ''}<sub
+					>No spaces or special characters except dashes.
+				</sub>{/if}
 
 			<label for="slug">Your link</label>
 			<input
