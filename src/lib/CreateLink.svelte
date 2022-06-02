@@ -78,7 +78,6 @@
 				},
 				result: async (res, form) => {
 					const created = await res.json();
-					console.log(created);
 					if (created.slug === slug) {
 						successCreated = true;
 						status = 'Done ✔️';
