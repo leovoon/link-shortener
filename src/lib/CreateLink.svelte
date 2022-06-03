@@ -25,19 +25,23 @@
 			invalidChar = false;
 			return;
 		}
-		if (/[ `!@#$%^&*()_+=[\]{};':"\\|,.<>/?~]/.test(slug)) {
-			invalidChar = true;
+		// if (/[ `!@#$%^&*()_+=[\]{};':"\\|,.<>/?~]/.test(slug)) {
+		// 	invalidChar = true;
+		// 	return;
+		// }
+		if (/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/.test(slug)) {
+			invalidChar = false;
+			const res = await fetch(`${url}/api/slug-check/${slug}`);
+			const { used } = await res.json();
+			slugUsed = used;
+			if (slugUsed) {
+				status = 'slug already in use';
+			} else {
+				status = 'slug name ok';
+			}
 			return;
 		}
-		invalidChar = false;
-		const res = await fetch(`${url}/api/slug-check/${slug}`);
-		const { used } = await res.json();
-		slugUsed = used;
-		if (slugUsed) {
-			status = 'slug already in use';
-		} else {
-			status = 'slug name ok';
-		}
+		invalidChar = true;
 		return;
 	}
 
@@ -103,7 +107,7 @@
 			/>
 			{#if slugUsed && slug !== ''}<sub>Slug name used.</sub>{/if}
 			{#if invalidChar && slug !== ''}<sub
-					>No spaces or special characters except dashes.
+					>No spaces or special characters except dashes between word.
 				</sub>{/if}
 
 			<label for="slug">Your link</label>
