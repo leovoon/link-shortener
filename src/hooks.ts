@@ -11,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }): Promise<Response> => {
 		const slug = event.url.pathname.split('/').pop();
 		const slugFetch = await fetch(`${event.url.origin}/api/get-url/${slug}`);
 		if (slugFetch.status === 404) {
-			return new Response('Not Found', { status: 404 });
+			return resolve(event);
 		}
 		const { data } = await slugFetch.json();
 
