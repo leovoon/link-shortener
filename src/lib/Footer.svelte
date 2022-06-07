@@ -25,6 +25,9 @@
 
 <style>
 	footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
 		border-top: 1px solid darkgray;
 		margin-top: 4em;
 		justify-content: center;
