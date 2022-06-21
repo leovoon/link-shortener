@@ -132,7 +132,6 @@
 		max-height: 65vh;
 		display: grid;
 		margin: 0 auto;
-		margin-bottom: 70px;
 		place-items: center;
 		overflow-x: none;
 	}

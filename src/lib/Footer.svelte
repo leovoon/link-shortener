@@ -25,11 +25,8 @@
 
 <style>
 	footer {
-		position: absolute;
-		bottom: 0;
-		left: 0;
 		border-top: 1px solid darkgray;
-		margin-top: 4em;
+		margin-top: 60%;
 		justify-content: center;
 		display: flex;
 		width: 100vw;
@@ -52,6 +49,7 @@
 		font-size: 0.875rem;
 		line-height: 1.25rem;
 		display: flex;
+		margin: 0 auto;
 	}
 
 	.ml-auto {
