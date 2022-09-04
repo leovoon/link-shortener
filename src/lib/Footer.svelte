@@ -26,7 +26,8 @@
 <style>
 	footer {
 		border-top: 1px solid darkgray;
-		margin-top: 60%;
+		position: absolute;
+		bottom: 0;
 		justify-content: center;
 		display: flex;
 		width: 100vw;

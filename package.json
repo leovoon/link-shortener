@@ -2,11 +2,10 @@
 	"name": "sveltekit-url-shortner",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
-		"package": "svelte-kit package",
-		"preview": "svelte-kit preview",
-		"prepare": "svelte-kit sync",
+		"dev": "vite dev",
+		"build": "vite build",
+		"package": "vite package",
+		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
@@ -18,10 +17,10 @@
 		"@types/lodash.debounce": "^4.0.7",
 		"@typescript-eslint/eslint-plugin": "^5.10.1",
 		"@typescript-eslint/parser": "^5.10.1",
-		"lodash.debounce": "^4.0.8",
 		"eslint": "^8.12.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"lodash.debounce": "^4.0.8",
 		"prettier": "^2.5.1",
 		"prettier-plugin-svelte": "^2.5.0",
 		"prisma": "^3.14.0",
@@ -29,7 +28,8 @@
 		"svelte-check": "^2.2.6",
 		"svelte-preprocess": "^4.10.6",
 		"tslib": "^2.3.1",
-		"typescript": "~4.6.2"
+		"typescript": "~4.6.2",
+		"vite": "^3.1.0-beta.1"
 	},
 	"type": "module",
 	"dependencies": {
