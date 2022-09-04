@@ -14,7 +14,7 @@ export const handle: Handle = async ({ event, resolve }): Promise<Response> => {
 			return resolve(event);
 		}
 		const data = await slugFetch.json();
-		console.log(data);
+
 		if (data?.url) {
 			return Response.redirect(data.url, 301);
 		}
