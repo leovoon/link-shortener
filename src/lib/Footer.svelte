@@ -1,7 +1,7 @@
 <footer>
 	<div class="wrapper">
 		<div class="">
-			© 2022<!-- -->
+			© 20221<!-- -->
 			<a class="link link-hover" href="https://github.com/leovoon" target="_blank" rel="noreferrer"
 				>Leo Voon</a
 			>
@@ -26,10 +26,9 @@
 <style>
 	footer {
 		border-top: 1px solid darkgray;
-		position: absolute;
-		bottom: 0;
 		justify-content: center;
 		display: flex;
+		margin-top: 20vh;
 		width: 100vw;
 		color: gray;
 	}
