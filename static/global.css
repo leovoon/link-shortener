@@ -28,7 +28,7 @@ h3 {
 }
 
 h1 {
-	padding-block: 40px;
+	padding-block: 60px;
 	font-size: clamp(4rem, 14vw, 6rem);
 	background: -webkit-linear-gradient(45deg, #09009f, #00ff95 80%);
 	-webkit-background-clip: text;
