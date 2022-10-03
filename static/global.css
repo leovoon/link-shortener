@@ -1,4 +1,30 @@
-@import url(https://fonts.googleapis.com/css?family=Sniglet|Raleway:900);
+/* raleway-900 - latin */
+@font-face {
+	font-family: 'Raleway';
+	font-style: normal;
+	font-weight: 900;
+	src: url('../fonts/raleway-latin-900.eot'); /* IE9 Compat Modes */
+	src: local(''), url('../fonts/raleway-latin-900.eot?#iefix') format('embedded-opentype'),
+		/* IE6-IE8 */ url('../fonts/raleway-latin-900.woff2') format('woff2'),
+		/* Super Modern Browsers */ url('../fonts/raleway-latin-900.woff') format('woff'),
+		/* Modern Browsers */ url('../fonts/raleway-latin-900.ttf') format('truetype'),
+		/* Safari, Android, iOS */ url('../fonts/raleway-latin-900.svg#Raleway') format('svg'); /* Legacy iOS */
+	display: swap;
+}
+
+/* sniglet-regular - latin */
+@font-face {
+	font-family: 'Sniglet';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/sniglet-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local(''), url('../fonts/sniglet-latin-regular.eot?#iefix') format('embedded-opentype'),
+		/* IE6-IE8 */ url('../fonts/sniglet-latin-regular.woff2') format('woff2'),
+		/* Super Modern Browsers */ url('../fonts/sniglet-latin-regular.woff') format('woff'),
+		/* Modern Browsers */ url('../fonts/sniglet-latin-regular.ttf') format('truetype'),
+		/* Safari, Android, iOS */ url('../fonts/sniglet-latin-regular.svg#Sniglet') format('svg'); /* Legacy iOS */
+	display: swap;
+}
 
 body,
 html {
