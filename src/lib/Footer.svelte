@@ -1,7 +1,7 @@
 <footer>
 	<div class="wrapper">
 		<div class="">
-			© 20221<!-- -->
+			© {`${new Date().getFullYear()}`}
 			<a class="link link-hover" href="https://github.com/leovoon" target="_blank" rel="noreferrer"
 				>Leo Voon</a
 			>
