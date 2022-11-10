@@ -51,12 +51,14 @@ h3 {
 	width: 100%;
 	text-align: center;
 	word-break: break-all;
+	
 }
 
 h1 {
 	padding-block: 60px;
 	font-size: clamp(4rem, 14vw, 6rem);
 	background: -webkit-linear-gradient(45deg, #09009f, #00ff95 80%);
+	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
@@ -66,8 +68,9 @@ h2 {
 	height: 80px;
 	display: grid;
 	place-content: center;
-	margin-top: -80px;
+	margin-top: -75px;
 	background: -webkit-linear-gradient(45deg, #696969, #d3d3d3 70%);
+	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
@@ -77,6 +80,7 @@ h3 {
 	font-size: 1.5em;
 	margin-block: 60px;
 	background: -webkit-linear-gradient(150deg, #1b44e8, #00cc77 80%);
+	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
