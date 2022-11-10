@@ -2,6 +2,9 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { prisma } from '../../../../db/client';
 import { json } from '@sveltejs/kit';
 import { error } from '@sveltejs/kit';
+
+export const prerender = 'auto';
+
 export const GET: RequestHandler = async ({ params, setHeaders }) => {
 	const slug = params.slug;
 
