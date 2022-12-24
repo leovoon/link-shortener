@@ -72,8 +72,7 @@
 				/>
 			</div>
 		</div>
-	{/if}
-	{#if !successCreated}
+	{:else}
 		<form
 			in:fly={{ x: -100, delay: 400 }}
 			out:fly={{ x: -100 }}
