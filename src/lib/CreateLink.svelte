@@ -5,6 +5,7 @@
 	import debounce from 'lodash.debounce';
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
+	import isUrlHttp from 'is-url-http';
 
 	let successCreated = false;
 	let slug = '';
@@ -12,6 +13,8 @@
 	let status = '';
 	let slugUsed = false;
 	let invalidChar = false;
+	$: urlInvalid = !isUrlHttp(link);
+
 	const url = $page.url.origin;
 
 	const handleInput = debounce(() => {
@@ -92,7 +95,15 @@
 			action="/api/create-url"
 			method="post"
 		>
-			<label for="slug">Give a fancy name</label>
+		<label for="slug">Your link</label>
+		<input
+			required
+			type="url"
+			name="url"
+			bind:value={link}
+			placeholder="https://long-long-secret.com"
+		/>
+			<label for="slug">Give a slug name</label>
 
 			<input
 				class:slug-used={slugUsed || invalidChar}
@@ -109,15 +120,7 @@
 					>No spaces or special characters except dashes between word.
 				</sub>{/if}
 
-			<label for="slug">Your link</label>
-			<input
-				required
-				type="url"
-				name="url"
-				bind:value={link}
-				placeholder="https://long-long-secret.com"
-			/>
-			<input disabled={slugUsed || invalidChar} type="submit" value="Create Short Link" />
+			<input disabled={slugUsed || invalidChar || urlInvalid} type="submit" value="Create Short Link" />
 		</form>
 	{/if}
 </section>
