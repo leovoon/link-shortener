@@ -36,6 +36,7 @@
 	"dependencies": {
 		"@prisma/client": "^4.13.0",
 		"copy-to-clipboard": "^3.3.3",
-		"is-url-http": "^2.3.5"
+		"is-url-http": "^2.3.5",
+		"zod": "^3.21.4"
 	}
 }

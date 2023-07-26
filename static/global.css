@@ -51,7 +51,6 @@ h3 {
 	width: 100%;
 	text-align: center;
 	word-break: break-all;
-	
 }
 
 h1 {
@@ -118,8 +117,8 @@ input {
 	box-sizing: border-box;
 }
 
-input.slug-used,
-input.slug-used:focus {
+input.error-class,
+input.error-class:focus {
 	border: solid 3px #f99a9a;
 }
 

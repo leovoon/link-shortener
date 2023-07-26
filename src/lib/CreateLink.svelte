@@ -5,47 +5,48 @@
 	import debounce from 'lodash.debounce';
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
-	import isUrlHttp from 'is-url-http';
+	import { z } from 'zod';
 
 	let successCreated = false;
 	let slug = '';
 	let link = '';
 	let status = '';
 	let slugUsed = false;
-	let invalidChar = false;
-	$: urlInvalid = !isUrlHttp(link);
-
+	const alphanumericString = z.string().regex(/^[a-zA-Z0-9]*$/);
+	$: invalidChar = slug.length > 0 && !alphanumericString.safeParse(slug).success;
+	$: urlString = z.string().url().safeParse(link);
+	$: urlInvalid = link.length > 0 && !urlString.success;
 	const url = $page.url.origin;
 
 	const handleInput = debounce(() => {
 		slugValidate();
-	}, 1000);
+	}, 500);
 
 	async function slugValidate() {
 		slug = slug.trim();
 		if (slug === '') {
 			status = '';
-			invalidChar = false;
 			return;
 		}
-		// if (/[ `!@#$%^&*()_+=[\]{};':"\\|,.<>/?~]/.test(slug)) {
-		// 	invalidChar = true;
-		// 	return;
-		// }
-		if (/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/.test(slug)) {
-			invalidChar = false;
+
+		if (!invalidChar) {
 			const res = await fetch(`${url}/api/slug-check/${slug}`);
-			const { used } = await res.json();
-			slugUsed = used;
-			if (slugUsed) {
-				status = 'slug already in use';
-			} else {
-				status = 'slug name ok';
+			try {
+				const { used } = await res.json();
+				slugUsed = used;
+				if (slugUsed) {
+					status = 'slug already in use';
+				} else if (slugUsed === false) {
+					status = 'slug name ok';
+				} else {
+					throw new Error('Something went wrong');
+				}
+			} catch (error) {
+				if (error instanceof Error) {
+					status = error.message;
+				}
 			}
-			return;
 		}
-		invalidChar = true;
-		return;
 	}
 
 	function handleCopy() {
@@ -95,32 +96,36 @@
 			action="/api/create-url"
 			method="post"
 		>
-		<label for="slug">Your link</label>
-		<input
-			required
-			type="url"
-			name="url"
-			bind:value={link}
-			placeholder="https://long-long-secret.com"
-		/>
+			<label for="slug">Your link</label>
+			<input
+				required
+				class:error-class={urlInvalid}
+				type="url"
+				name="url"
+				bind:value={link}
+				placeholder="https://long-long-secret.com"
+			/>
+			{#if urlInvalid}<sub>Please enter a valid link</sub>{/if}
+
 			<label for="slug">Give a slug name</label>
 
 			<input
-				class:slug-used={slugUsed || invalidChar}
+				class:error-class={slugUsed || invalidChar}
 				required
 				type="text"
 				name="slug"
-				pattern="^[a-zA-Z0-9-]+$"
 				on:input={handleInput}
 				bind:value={slug}
-				placeholder="/yourfancyname"
+				placeholder="yourfancyname"
 			/>
 			{#if slugUsed && slug !== ''}<sub>Slug name used.</sub>{/if}
-			{#if invalidChar && slug !== ''}<sub
-					>No spaces or special characters except dashes between word.
-				</sub>{/if}
+			{#if invalidChar}<sub>No spaces or special characters except dashes between word. </sub>{/if}
 
-			<input disabled={slugUsed || invalidChar || urlInvalid} type="submit" value="Create Short Link" />
+			<input
+				disabled={slugUsed || invalidChar || urlInvalid}
+				type="submit"
+				value="Create Short Link"
+			/>
 		</form>
 	{/if}
 </section>
