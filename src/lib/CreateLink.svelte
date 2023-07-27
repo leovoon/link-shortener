@@ -30,7 +30,9 @@
 		}
 
 		if (!invalidChar) {
-			const res = await fetch(`${url}/api/slug-check/${slug}`);
+			const res = await fetch(`${url}/api/slug-check/${slug}`, {
+				method: 'POST'
+			});
 			try {
 				const { used } = await res.json();
 				slugUsed = used;
