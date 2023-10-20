@@ -6,12 +6,16 @@
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
 	import { z } from 'zod';
+	import type { createdShortLinkType } from '../routes/+page';
+	import { invalidate, invalidateAll } from '$app/navigation';
+	import { format } from 'path';
 
 	let successCreated = false;
 	let slug = '';
 	let link = '';
 	let status = '';
 	let slugUsed = false;
+	let formRef: HTMLFormElement;
 	const alphanumericString = z.string().regex(/^[a-zA-Z0-9]*$/);
 	$: invalidChar = slug.length > 0 && !alphanumericString.safeParse(slug).success;
 	$: urlString = z.string().url().safeParse(link);
@@ -55,6 +59,24 @@
 		copy(`${url}/${slug}`);
 		status = 'Copied!';
 	}
+
+	async function handleCreated(res: Response, form: HTMLFormElement) {
+		const created = (await res.json()) as createdShortLinkType;
+		if (created) {
+			const localhistory = localStorage.getItem('history');
+			if (localhistory) {
+				const history = JSON.parse(localhistory);
+				history.unshift(created);
+				localStorage.setItem('history', JSON.stringify(history));
+			} else {
+				localStorage.setItem('history', JSON.stringify([created]));
+			}
+			successCreated = true;
+			status = 'Done ✔️';
+			await invalidateAll();
+		}
+		form.reset();
+	}
 </script>
 
 {#key status}
@@ -74,26 +96,21 @@
 						link = '';
 						status = '';
 						successCreated = false;
+						formRef.reset();
 					}}
 				/>
 			</div>
 		</div>
 	{:else}
 		<form
+			bind:this={formRef}
 			in:fly={{ x: -100, delay: 400 }}
 			out:fly={{ x: -100 }}
 			use:enhance={{
 				pending: () => {
 					status = 'Generating...';
 				},
-				result: async (res, form) => {
-					const created = await res.json();
-					if (created.rowsAffected === 1) {
-						successCreated = true;
-						status = 'Done ✔️';
-					}
-					form.reset();
-				}
+				result: handleCreated
 			}}
 			action="/api/create-url"
 			method="post"

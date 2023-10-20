@@ -1,9 +1,17 @@
+import { invalidate } from '$app/navigation';
 import { db } from '../../../db/client';
 import { shortlink } from '../../../db/schema';
 import { error, json } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
+
+interface History {
+	slug: string;
+	url: string;
+	createdAt: Date;
+}
 
 // POST /create-url.json
-export const POST = async ({ request }) => {
+export const POST = async ({ request, cookies }) => {
 	const formData = await request.formData();
 	const slug = formData.get('slug') as string;
 	const url = formData.get('url') as string;
@@ -13,5 +21,14 @@ export const POST = async ({ request }) => {
 		slug: slug,
 		url: url
 	});
-	return json(result);
+	if (!result) throw error(500, 'Failed to create shortlink');
+
+	const inserted = await db
+		.select()
+		.from(shortlink)
+		.where(eq(shortlink.id, Number(result.insertId)));
+
+	if (inserted.length === 0) throw error(500, 'Failed to get created shortlink');
+
+	return json(inserted[0]);
 };
