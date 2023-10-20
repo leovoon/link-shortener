@@ -1,14 +1,17 @@
-import { api } from './_api';
-import { json, type RequestHandler } from '@sveltejs/kit';
-import type { ShortLink } from '@prisma/client';
+import { db } from '../../../db/client';
+import { shortlink } from '../../../db/schema';
+import { error, json } from '@sveltejs/kit';
 
 // POST /create-url.json
-export const POST: RequestHandler = async ({ request }) => {
+export const POST = async ({ request }) => {
 	const formData = await request.formData();
-	const input = {
-		slug: formData.get('slug'),
-		url: formData.get('url')
-	};
-	const added = await api(request, input as ShortLink);
-	return json(added);
+	const slug = formData.get('slug') as string;
+	const url = formData.get('url') as string;
+
+	if (!slug || !url) throw error(400, 'Invalid input');
+	const result = await db.insert(shortlink).values({
+		slug: slug,
+		url: url
+	});
+	return json(result);
 };

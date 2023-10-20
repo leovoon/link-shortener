@@ -1,21 +1,18 @@
-import type { RequestHandler } from '@sveltejs/kit';
-import { prisma } from '../../../../db/client';
+import { db } from '../../../../db/client';
+import { shortlink } from '../../../../db/schema';
 import { json } from '@sveltejs/kit';
 import { error } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
 
 export const prerender = 'auto';
 
-export const GET: RequestHandler = async ({ params, setHeaders }) => {
+export const GET = async ({ params, setHeaders }) => {
 	const slug = params.slug;
 
-	if (!slug || typeof slug !== 'string') return error(400, 'Invalid slug');
+	if (!slug || typeof slug !== 'string') throw error(400, 'Invalid slug');
 
-	const data = await prisma.shortLink.findFirst({
-		where: {
-			slug: {
-				equals: slug
-			}
-		}
+	const data = await db.query.shortlink.findFirst({
+		where: eq(shortlink.slug, slug)
 	});
 
 	if (!data) throw error(404, 'Not found');

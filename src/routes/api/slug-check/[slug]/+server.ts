@@ -1,10 +1,13 @@
-import { api } from '../_api';
-import { json, error, type RequestHandler } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
+import { db } from '../../../../db/client';
+import { shortlink } from '../../../../db/schema';
+import { json, error } from '@sveltejs/kit';
 
-export const POST: RequestHandler = async ({ params, request }) => {
+export const POST = async ({ params }) => {
 	const slug = params.slug;
 	if (!slug) throw error(400, 'No slug provided');
-	const slugUsed = await api(request, { slug });
+	const result = await db.select().from(shortlink).where(eq(shortlink.slug, slug));
 
-	return json(slugUsed);
+	if (result.length === 0) return json({ used: false });
+	else return json({ used: true });
 };

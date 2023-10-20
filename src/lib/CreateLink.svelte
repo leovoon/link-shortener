@@ -88,7 +88,7 @@
 				},
 				result: async (res, form) => {
 					const created = await res.json();
-					if (created.slug === slug) {
+					if (created.rowsAffected === 1) {
 						successCreated = true;
 						status = 'Done ✔️';
 					}
