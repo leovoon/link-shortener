@@ -1,5 +1,5 @@
-import { db } from '../../../../db/client';
-import { shortlink } from '../../../../db/schema';
+import { db } from '$lib/db/client';
+import { shortlink } from '$lib/db/schema';
 import { json } from '@sveltejs/kit';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';

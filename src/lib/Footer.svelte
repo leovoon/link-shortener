@@ -1,10 +1,11 @@
 <footer>
 	<div class="wrapper">
 		<div class="">
-			© {`${new Date().getFullYear()}`}
+			Made by
 			<a class="link link-hover" href="https://github.com/leovoon" target="_blank" rel="noreferrer"
-				>Leo Voon</a
+				>leovoon</a
 			>
+			© {`${new Date().getFullYear()}`}
 		</div>
 		<div class="ml-auto">
 			<a href="https://github.com/leovoon/link-shortener" target="_blank" rel="noreferrer"
@@ -25,7 +26,6 @@
 
 <style>
 	footer {
-		border-top: 1px solid darkgray;
 		justify-content: center;
 		display: flex;
 		margin-top: 20vh;

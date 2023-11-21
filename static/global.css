@@ -97,7 +97,13 @@ input {
 	display: block;
 	margin-top: 10px;
 }
-input {
+
+button {
+	cursor: pointer;
+}
+
+input,
+button {
 	width: 100%;
 	border: none;
 	border-radius: 20px;
@@ -117,8 +123,8 @@ input {
 	box-sizing: border-box;
 }
 
-input.error-class,
-input.error-class:focus {
+input[aria-invalid='true'],
+input[aria-invalid='true']:focus {
 	border: solid 3px #f99a9a;
 }
 
@@ -127,6 +133,7 @@ input:focus {
 }
 
 input[type='submit'],
+button[type='submit'],
 input[type='button'] {
 	background-color: #e58f0e;
 	color: white;
@@ -141,11 +148,13 @@ input[type='button'] {
 	transition: background-color 0.5s;
 }
 input[type='submit']:hover,
-input[type='button']:hover {
+input[type='button']:hover,
+button[type='submit']:hover {
 	background-color: #c87b08;
 }
 
-input[type='submit']:disabled {
+input[type='submit']:disabled,
+button[type='submit']:disabled {
 	cursor: not-allowed;
 	background-color: #b5adaddb;
 }

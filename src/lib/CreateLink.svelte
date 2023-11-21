@@ -1,151 +1,135 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import copy from 'copy-to-clipboard';
-	import { enhance } from '$lib/action/form';
-	import debounce from 'lodash.debounce';
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
-	import { z } from 'zod';
-	import type { createdShortLinkType } from '../routes/+page';
-	import { invalidate, invalidateAll } from '$app/navigation';
-	import { format } from 'path';
+	import type { selectShortLinkSchema, ShortLink } from '$lib/db/schema.js';
+	import { superForm } from 'sveltekit-superforms/client';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	import LoadingSpinner from '$lib/LoadingSpinner.svelte';
+	import { invalidate } from '$app/navigation';
 
-	let successCreated = false;
-	let slug = '';
-	let link = '';
-	let status = '';
-	let slugUsed = false;
-	let formRef: HTMLFormElement;
-	const alphanumericString = z.string().regex(/^[a-zA-Z0-9]*$/);
-	$: invalidChar = slug.length > 0 && !alphanumericString.safeParse(slug).success;
-	$: urlString = z.string().url().safeParse(link);
-	$: urlInvalid = link.length > 0 && !urlString.success;
-	const url = $page.url.origin;
+	export let data: SuperValidated<typeof selectShortLinkSchema>;
+	let created = false;
+	let copied = false;
 
-	const handleInput = debounce(() => {
-		slugValidate();
-	}, 500);
+	const { form, enhance, constraints, reset, delayed, message, submitting, errors, allErrors } =
+		superForm(data, {
+			validators: {
+				slug: async (slug) => {
+					if (!slug) return;
+					try {
+						const res = await fetch(`/api/slug-check/${slug}`, {
+							method: 'POST'
+						});
+						const slugResult = (await res.json()) as { used: boolean };
 
-	async function slugValidate() {
-		slug = slug.trim();
-		if (slug === '') {
-			status = '';
-			return;
-		}
-
-		if (!invalidChar) {
-			const res = await fetch(`${url}/api/slug-check/${slug}`, {
-				method: 'POST'
-			});
-			try {
-				const { used } = await res.json();
-				slugUsed = used;
-				if (slugUsed) {
-					status = 'slug already in use';
-				} else if (slugUsed === false) {
-					status = 'slug name ok';
-				} else {
-					throw new Error('Something went wrong');
+						if (slugResult.used) {
+							return 'Slug already in use';
+						}
+						return null;
+					} catch (error) {
+						console.error(error);
+						return 'Something went wrong';
+					}
 				}
-			} catch (error) {
-				if (error instanceof Error) {
-					status = error.message;
+			},
+			validationMethod: 'oninput',
+			onUpdated({ form }) {
+				if (form.valid) {
+					created = true;
+					updateLocalHistory(form.data);
 				}
 			}
-		}
-	}
+		});
 
-	function handleCopy() {
-		copy(`${url}/${slug}`);
-		status = 'Copied!';
-	}
-
-	async function handleCreated(res: Response, form: HTMLFormElement) {
-		const created = (await res.json()) as createdShortLinkType;
-		if (created) {
-			const localhistory = localStorage.getItem('history');
-			if (localhistory) {
-				const history = JSON.parse(localhistory);
-				history.unshift(created);
-				localStorage.setItem('history', JSON.stringify(history));
-			} else {
-				localStorage.setItem('history', JSON.stringify([created]));
-			}
-			successCreated = true;
-			status = 'Done ✔️';
-			await invalidateAll();
+	function updateLocalHistory(created: ShortLink) {
+		const localhistory = localStorage.getItem('history');
+		if (localhistory) {
+			const history = JSON.parse(localhistory);
+			history.unshift(created);
+			localStorage.setItem('history', JSON.stringify(history));
+		} else {
+			localStorage.setItem('history', JSON.stringify([created]));
 		}
-		form.reset();
+		invalidate((url) => url.pathname === '/');
 	}
 </script>
 
-{#key status}
-	<h2 in:fly={{ y: -20 }}>{status}</h2>
-{/key}
 <section>
-	{#if successCreated}
-		<div in:fly={{ x: 100, delay: 400 }} out:fly class="container">
-			<h3 transition:flipboard|local={{ delay: 300, duration: 800 }}>{`${url}/${slug}`}</h3>
-			<div style:max-width="640px" style:min-width="60vw" style:margin="0 auto">
-				<input type="button" value="Copy Link" on:click={handleCopy} />
-				<input
-					type="button"
-					value="Reset"
-					on:click={() => {
-						slug = '';
-						link = '';
-						status = '';
-						successCreated = false;
-						formRef.reset();
-					}}
-				/>
-			</div>
-		</div>
-	{:else}
-		<form
-			bind:this={formRef}
-			in:fly={{ x: -100, delay: 400 }}
-			out:fly={{ x: -100 }}
-			use:enhance={{
-				pending: () => {
-					status = 'Generating...';
-				},
-				result: handleCreated
-			}}
-			action="/api/create-url"
-			method="post"
-		>
-			<label for="slug">Your link</label>
+	{#if !created}
+		<form method="POST" action="?/createLink" use:enhance in:fly={{ x: 100, delay: 400 }}>
+			{#if $message}
+				<p>{$message}</p>
+			{/if}
+			<label for="url">Url</label>
 			<input
-				required
-				class:error-class={urlInvalid}
 				type="url"
 				name="url"
-				bind:value={link}
-				placeholder="https://long-long-secret.com"
+				placeholder="enter url here"
+				bind:value={$form.url}
+				autocomplete="off"
+				{...$constraints.url}
+				aria-invalid={$errors.url ? 'true' : undefined}
 			/>
-			{#if urlInvalid}<sub>Please enter a valid link</sub>{/if}
+			{#if $errors.url}<span class="invalid">{$errors.url}</span>{/if}
 
-			<label for="slug">Give a slug name</label>
-
+			<label for="slug">Name</label>
 			<input
-				class:error-class={slugUsed || invalidChar}
-				required
 				type="text"
 				name="slug"
-				on:input={handleInput}
-				bind:value={slug}
-				placeholder="yourfancyname"
+				placeholder="enter a short name"
+				autocomplete="off"
+				bind:value={$form.slug}
+				{...$constraints.url}
+				aria-invalid={$errors.slug ? 'true' : undefined}
 			/>
-			{#if slugUsed && slug !== ''}<sub>Slug name used.</sub>{/if}
-			{#if invalidChar}<sub>No spaces or special characters except dashes between word. </sub>{/if}
-
-			<input
-				disabled={slugUsed || invalidChar || urlInvalid}
-				type="submit"
-				value="Create Short Link"
-			/>
+			{#if $errors.slug}<span class="invalid">{$errors.slug}</span>{/if}
+			<button type="submit" disabled={$submitting}>
+				{#if $delayed}
+					<LoadingSpinner />
+				{:else}
+					Create short link
+				{/if}
+			</button>
 		</form>
+	{:else}
+		<div class="container" in:fly={{ x: -100, delay: 400 }} out:fly={{ x: -100 }}>
+			<p>Grab your link 👇👇👇</p>
+			<div class="link-section">
+				<h3 transition:flipboard|local={{ delay: 300, duration: 400 }} style="margin-block: 0px;">
+					{$page.url.origin}/{$form.slug}
+				</h3>
+				<button
+					on:click={() => {
+						copy(`${$page.url.origin}/${$form.slug}`, {
+							onCopy() {
+								copied = true;
+								setTimeout(() => {
+									copied = false;
+								}, 2000);
+							}
+						});
+					}}
+				>
+					{#if copied}
+						Copied!
+					{:else}
+						Copy
+					{/if}
+				</button>
+			</div>
+			<div>
+				<button
+					on:click={() => {
+						reset();
+						created = false;
+					}}
+				>
+					Create a new one
+				</button>
+			</div>
+		</div>
 	{/if}
 </section>
 
@@ -161,6 +145,13 @@
 		place-items: center;
 		overflow-x: none;
 	}
+
+	.link-section {
+		margin-block: 2rem;
+		display: grid;
+		gap: 1rem;
+	}
+
 	form {
 		position: absolute;
 	}
@@ -168,11 +159,14 @@
 		position: absolute;
 		width: inherit;
 		display: grid;
-		place-items: center;
+		place-content: center;
 	}
 
-	sub {
+	span.invalid {
 		color: #f04b4b;
 		padding-left: 20px;
+	}
+	p {
+		text-align: center;
 	}
 </style>

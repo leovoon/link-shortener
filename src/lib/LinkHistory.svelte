@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { createdShortLinkType } from '../routes/+page';
 	import { page } from '$app/stores';
-	export let history: createdShortLinkType[] = [];
+	import type { selectShortLinkSchema } from './db/schema';
+	import type { z } from 'zod';
+	export let history: z.infer<typeof selectShortLinkSchema>[] = [];
 </script>
 
 {#if history.length > 0}

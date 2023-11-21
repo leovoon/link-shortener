@@ -1,13 +1,10 @@
 import { browser } from '$app/environment';
-import type { z } from 'zod';
-import type { selectShortLinkSchema } from '../db/schema';
+import type { ShortLink } from '$lib/db/schema';
 
-export type createdShortLinkType = z.infer<typeof selectShortLinkSchema>;
-
-export const load = () => {
-	let history = [];
+export const load = async ({ data }) => {
+	let history;
 	if (browser) {
-		history = JSON.parse(localStorage.getItem('history') || '[]');
+		history = JSON.parse(localStorage.getItem('history') || '[]') as ShortLink[];
 	}
-	return { history } as { history: createdShortLinkType[] };
+	return { serverData: data, history };
 };
