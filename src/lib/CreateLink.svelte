@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import copy from 'copy-to-clipboard';
+	import { copy } from 'svelte-copy';
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
 	import type { selectShortLinkSchema, ShortLink } from '$lib/db/schema.js';
@@ -101,16 +101,12 @@
 					{$page.url.origin}/{$form.slug}
 				</h3>
 				<button
-					on:click={() => {
-						copy(`${$page.url.origin}/${$form.slug}`, {
-							onCopy() {
-								copied = true;
-								setTimeout(() => {
-									copied = false;
-								}, 2000);
-							}
-						});
+					use:copy={`${$page.url.origin}/${$form.slug}`}
+					on:svelte-copy={() => {
+						copied = true;
+						setTimeout(() => (copied = false), 2000);
 					}}
+					on:svelte-copy:error={(event) => alert(`There was an error: ${event.detail.message})`)}
 				>
 					{#if copied}
 						Copied!

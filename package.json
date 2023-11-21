@@ -28,6 +28,7 @@
 		"prettier-plugin-svelte": "^2.10.1",
 		"svelte": "^3.59.2",
 		"svelte-check": "^3.5.2",
+		"svelte-copy": "^1.4.1",
 		"svelte-preprocess": "^5.0.4",
 		"sveltekit-superforms": "^1.10.2",
 		"tslib": "^2.6.2",
@@ -37,7 +38,6 @@
 	"type": "module",
 	"dependencies": {
 		"@planetscale/database": "^1.11.0",
-		"copy-to-clipboard": "^3.3.3",
 		"dotenv": "^16.3.1",
 		"drizzle-orm": "^0.28.6",
 		"drizzle-zod": "^0.5.1",
