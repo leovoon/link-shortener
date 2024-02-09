@@ -2,7 +2,7 @@ import { browser } from '$app/environment';
 import type { ShortLink } from '$lib/db/schema';
 
 export const load = async ({ data }) => {
-	let history;
+	let history: ShortLink[] | undefined;
 	if (browser) {
 		history = JSON.parse(localStorage.getItem('history') || '[]') as ShortLink[];
 	}

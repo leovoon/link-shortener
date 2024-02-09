@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { selectShortLinkSchema } from './db/schema';
-	import type { z } from 'zod';
-	export let history: z.infer<typeof selectShortLinkSchema>[] = [];
+	import type { ShortLink } from './db/schema';
+	export let history: ShortLink[] = [];
 </script>
 
 {#if history.length > 0}
@@ -19,7 +18,7 @@
 				{#each history as item}
 					<tr>
 						<a href={`${$page.url.hostname}/${item.slug}`}>
-							<td>{item.slug}</td>
+							<td>{`${$page.url}${item.slug}`}</td>
 						</a>
 						<td>{item.url}</td>
 						<td>{new Date(item.createdAt).toLocaleString()}</td>

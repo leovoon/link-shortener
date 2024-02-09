@@ -3,45 +3,37 @@
 	import { copy } from 'svelte-copy';
 	import { fly } from 'svelte/transition';
 	import { flipboard } from '$lib/animation/flipboard';
-	import type { selectShortLinkSchema, ShortLink } from '$lib/db/schema.js';
-	import { superForm } from 'sveltekit-superforms/client';
+	import { insertShortLinkSchema, selectShortLinkSchema, type ShortLink } from '$lib/db/schema.js';
+	import { superForm } from 'sveltekit-superforms';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import LoadingSpinner from '$lib/LoadingSpinner.svelte';
 	import { invalidate } from '$app/navigation';
+	import type { Infer } from 'sveltekit-superforms';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import SuperDebug from 'sveltekit-superforms';
 
-	export let data: SuperValidated<typeof selectShortLinkSchema>;
+	export let data: SuperValidated<Infer<typeof insertShortLinkSchema>>;
 	let created = false;
 	let copied = false;
 
-	const { form, enhance, constraints, reset, delayed, message, submitting, errors, allErrors } =
-		superForm(data, {
-			validators: {
-				slug: async (slug) => {
-					if (!slug) return;
-					try {
-						const res = await fetch(`/api/slug-check/${slug}`, {
-							method: 'POST'
-						});
-						const slugResult = (await res.json()) as { used: boolean };
-
-						if (slugResult.used) {
-							return 'Slug already in use';
-						}
-						return null;
-					} catch (error) {
-						console.error(error);
-						return 'Something went wrong';
-					}
-				}
-			},
+	const { form, enhance, reset, delayed, message, submitting, errors, allErrors } = superForm(
+		data,
+		{
+			validators: zodClient(insertShortLinkSchema),
 			validationMethod: 'oninput',
+			resetForm: false,
+			autoFocusOnError: true,
+
+			// Error handling
+
 			onUpdated({ form }) {
 				if (form.valid) {
 					created = true;
-					updateLocalHistory(form.data);
+					updateLocalHistory(form.data as ShortLink);
 				}
 			}
-		});
+		}
+	);
 
 	function updateLocalHistory(created: ShortLink) {
 		const localhistory = localStorage.getItem('history');
@@ -56,6 +48,7 @@
 	}
 </script>
 
+<SuperDebug data={form} display={false} />
 <section>
 	{#if !created}
 		<form method="POST" action="?/createLink" use:enhance in:fly={{ x: 100, delay: 400 }}>
@@ -69,10 +62,19 @@
 				placeholder="enter url here"
 				bind:value={$form.url}
 				autocomplete="off"
-				{...$constraints.url}
 				aria-invalid={$errors.url ? 'true' : undefined}
 			/>
-			{#if $errors.url}<span class="invalid">{$errors.url}</span>{/if}
+			{#if $errors.url}
+				<div class="errors">
+					{#if $errors.url.length > 0}
+						{#each $errors.url as error}
+							<span class="invalid">{error}</span>
+						{/each}
+					{:else}
+						<span class="invalid">{$errors.url}</span>
+					{/if}
+				</div>
+			{/if}
 
 			<label for="slug">Name</label>
 			<input
@@ -81,10 +83,20 @@
 				placeholder="enter a short name"
 				autocomplete="off"
 				bind:value={$form.slug}
-				{...$constraints.url}
 				aria-invalid={$errors.slug ? 'true' : undefined}
 			/>
-			{#if $errors.slug}<span class="invalid">{$errors.slug}</span>{/if}
+			{#if $errors.slug}
+				<div class="errors">
+					{#if $errors.slug.length > 0}
+						{#each $errors.slug as error}
+							<span class="invalid">{error}</span>
+						{/each}
+					{:else}
+						<span class="invalid">{$errors.slug}</span>
+					{/if}
+				</div>
+			{/if}
+
 			<button type="submit" disabled={$submitting}>
 				{#if $delayed}
 					<LoadingSpinner />
@@ -164,5 +176,10 @@
 	}
 	p {
 		text-align: center;
+	}
+
+	.errors {
+		display: flex;
+		flex-direction: column;
 	}
 </style>

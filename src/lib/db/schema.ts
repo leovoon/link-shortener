@@ -1,6 +1,10 @@
+import { PUBLIC_BASE_URL_DEV, PUBLIC_BASE_URL_PROD } from '$env/static/public';
 import { mysqlTable, serial, text, timestamp } from 'drizzle-orm/mysql-core';
 import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
-import type { z } from 'zod';
+import { z } from 'zod';
+import { dev } from '$app/environment';
+
+const PUBLIC_BASE_URL = dev ? PUBLIC_BASE_URL_DEV : PUBLIC_BASE_URL_PROD;
 
 export const shortlink = mysqlTable('ShortLink', {
 	id: serial('id').primaryKey(),
@@ -12,12 +16,29 @@ export const shortlink = mysqlTable('ShortLink', {
 export const selectShortLinkSchema = createSelectSchema(shortlink);
 
 export const insertShortLinkSchema = createInsertSchema(shortlink, {
-	url: (schema) => schema.url.min(1, 'No empty').url('Invalid URL'),
+	url: (schema) =>
+		schema.url.refine((v) => /^(https?):\/\//i.test(v), {
+			message: 'Must be a valid URL.'
+		}),
 	slug: (schema) =>
 		schema.slug
 			.min(1, 'Must be at least 1 character long.')
 			.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Must be alphanumeric with no spaces or with dashes.')
+			.superRefine(async (val, ctx) => {
+				if (!val) return z.NEVER;
+				const res = await fetch(`${PUBLIC_BASE_URL}/api/slug-check/${val}`, {
+					method: 'POST'
+				});
+				const slugResult = (await res.json()) as { used: boolean };
+
+				if (slugResult.used) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Name taken. Please try another.'
+					});
+				}
+				return z.NEVER;
+			})
 });
 
 export type ShortLink = z.infer<typeof selectShortLinkSchema>;
-export type insertedShortLink = z.infer<typeof insertShortLinkSchema>;

@@ -12,5 +12,5 @@ export const POST = async ({ params }) => {
 		.where(eq(shortlink.slug, slug));
 
 	if (result.length === 0) return json({ used: false });
-	else return json({ used: true });
+	return json({ used: true });
 };

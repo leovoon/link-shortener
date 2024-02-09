@@ -1,19 +1,24 @@
-import { superValidate, message, setError } from 'sveltekit-superforms/server';
-import { insertShortLinkSchema, selectShortLinkSchema, shortlink } from '$lib/db/schema';
+import { superValidate, message, setError } from 'sveltekit-superforms';
+import { insertShortLinkSchema, shortlink } from '$lib/db/schema';
 import { fail } from '@sveltejs/kit';
 import { db } from '$lib/db/client';
 import { eq } from 'drizzle-orm';
+import { zod } from 'sveltekit-superforms/adapters';
+import type { Infer } from 'sveltekit-superforms';
 
 export const load = async () => {
-	const form = await superValidate(selectShortLinkSchema);
+	const form = await superValidate<Infer<typeof insertShortLinkSchema>>(zod(insertShortLinkSchema));
 	return {
 		form
 	};
 };
 
 export const actions = {
-	createLink: async ({ request }) => {
-		const form = await superValidate(request, insertShortLinkSchema);
+	createLink: async (request) => {
+		const form = await superValidate<Infer<typeof insertShortLinkSchema>>(
+			request,
+			zod(insertShortLinkSchema)
+		);
 		if (!form.valid) {
 			return fail(400, { form });
 		}
@@ -23,7 +28,7 @@ export const actions = {
 				.from(shortlink)
 				.where(eq(shortlink.slug, form.data.slug));
 
-			if (checkSlug.length > 0) return setError(form, 'Name taken');
+			if (checkSlug.length > 0) return setError(form, 'Name taken', { status: 409 });
 
 			const insertLink = await db.insert(shortlink).values({
 				slug: form.data.slug,
