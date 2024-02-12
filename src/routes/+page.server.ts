@@ -48,7 +48,7 @@ export const actions = {
 			return message(form, 'Link created.');
 		} catch (e) {
 			console.error(e);
-			return error(500, { message: 'Server error. Please try again later.' });
+			return error(500, { message: 'Server down. Please try again later.' });
 		}
 	}
 };

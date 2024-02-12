@@ -24,7 +24,7 @@
 			resetForm: false,
 			autoFocusOnError: true,
 
-			// Error handling
+			onError: 'apply',
 
 			onUpdated({ form }) {
 				if (form.valid) {
