@@ -44,7 +44,7 @@
 		} else {
 			localStorage.setItem('history', JSON.stringify([created]));
 		}
-		invalidate((url) => url.pathname === '/');
+		invalidate('/');
 	}
 </script>
 
@@ -94,6 +94,12 @@
 					{:else}
 						<span class="invalid">{$errors.slug}</span>
 					{/if}
+				</div>
+			{/if}
+
+			{#if $errors.createdAt}
+				<div class="errors">
+						<span class="invalid">{$errors.createdAt}</span>
 				</div>
 			{/if}
 
