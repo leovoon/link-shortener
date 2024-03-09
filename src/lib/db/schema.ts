@@ -1,10 +1,9 @@
 import { createSelectSchema, createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-// import { PUBLIC_BASE_URL_DEV, PUBLIC_BASE_URL_PROD } from '$env/static/public'
+import { PUBLIC_BASE_URL_DEV, PUBLIC_BASE_URL_PROD } from '$env/static/public'
 import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
-// const BASE_URL = process.env.NODE_ENV === 'development' ? PUBLIC_BASE_URL_DEV : PUBLIC_BASE_URL_PROD
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.NODE_ENV === 'development' ? PUBLIC_BASE_URL_DEV : PUBLIC_BASE_URL_PROD
 
 export const shortlink = pgTable('pendek', {
 	id: serial('id').primaryKey(),
