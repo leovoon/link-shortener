@@ -64,21 +64,14 @@ export const actions = {
 
 			if (checkSlug.length > 0) return setError(form, 'Name taken', { status: 409 });
 
-			const insertLink = await db.insert(shortlink).values({
+			const insertedLink = await db.insert(shortlink).values({
 				slug: form.data.slug,
 				url: form.data.url
-			});
+			}).returning();
 
-			if (!insertLink) return setError(form, 'Failed to create shortlink');
+			if (!insertedLink) return setError(form, 'Failed to create shortlink');
 
-			const returning = await db
-				.select()
-				.from(shortlink)
-				.where(eq(shortlink.id, Number(insertLink.insertId)));
-
-			if (returning.length === 0) return setError(form, 'Failed to get created shortlink');
-
-			form.data = returning[0];
+			form.data = insertedLink[0];
 			return message(form, 'Link created.');
 		} catch (e) {
 			console.error(e);

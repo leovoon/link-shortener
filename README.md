@@ -68,7 +68,7 @@ _Pendek_ means short in Malay. Turn your link into a shorter link.
 
 - [SvelteKit](https://kit.svelte.dev/)
 - [Prisma](https://www.prisma.io/)
-- [PlanetScale](https://planetscale.com)
+- [Neon Serverless Postgres](https://github.com/neondatabase/neon)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

@@ -1,1 +1,27 @@
-{"version":"5","dialect":"mysql","entries":[]}
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1709999249605,
+      "tag": "0000_early_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1709999402395,
+      "tag": "0001_complex_the_order",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709999416662,
+      "tag": "0002_gray_spitfire",
+      "breakpoints": true
+    }
+  ]
+}

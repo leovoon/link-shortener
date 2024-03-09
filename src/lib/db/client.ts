@@ -1,11 +1,8 @@
-import { drizzle } from 'drizzle-orm/planetscale-serverless';
-import { connect } from '@planetscale/database';
+import { neon } from '@neondatabase/serverless';
 import { DATABASE_URL } from '$env/static/private';
-import * as schema from './schema';
+import { drizzle } from 'drizzle-orm/neon-http';
 
-const connection = connect({
-	url: DATABASE_URL
-});
+const sql = neon(DATABASE_URL);
 
-console.log('Database connected');
-export const db = drizzle(connection, { schema });
+export const db = drizzle(sql);
+console.log('DB initialized!')
