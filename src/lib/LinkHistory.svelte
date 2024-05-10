@@ -6,8 +6,10 @@
 	import { h } from 'gridjs';
 
 	import 'gridjs/dist/theme/mermaid.css';
-
-	export let history: ShortLink[] = [];
+	interface Props {
+		history: ShortLink[];
+	}
+	let { history = [] }: Props = $props();
 
 	const columns = [
 		{
@@ -30,6 +32,6 @@
 
 <style>
 	.container {
-		padding: clamp(0.5rem, 5vw, 5rem);
+		padding: 1rem;
 	}
 </style>
