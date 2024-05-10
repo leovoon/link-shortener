@@ -30,7 +30,7 @@
 		"lodash.debounce": "^4.0.8",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
-		"svelte": "^4.0.0",
+		"svelte": "5.0.0-next.126",
 		"svelte-check": "^3.5.2",
 		"svelte-copy": "^1.4.1",
 		"svelte-preprocess": "^5.0.4",

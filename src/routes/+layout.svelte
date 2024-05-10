@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Footer from '$lib/Footer.svelte';
+	let {children} = $props()
 </script>
 
 <svelte:head>
@@ -10,7 +11,7 @@
 	<h1>Pendek<sub>link-shortener</sub></h1>
 </header>
 <main>
-	<slot />
+{@render children()}
 </main>
 <Footer />
 

@@ -11,10 +11,14 @@
 	import type { Infer } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import SuperDebug from 'sveltekit-superforms';
+	import CopyButton from './CopyButton.svelte';
 
-	export let data: SuperValidated<Infer<typeof insertShortLinkSchema>>;
-	let created = false;
-	let copied = false;
+	interface Props {
+		data: SuperValidated<Infer<typeof insertShortLinkSchema>>;
+	}
+	let { data }: Props = $props();
+	let created = $state(false);
+	let copied = $state(false);
 
 	const { form, enhance, reset, delayed, message, submitting, errors, allErrors } = superForm(
 		data,
@@ -99,7 +103,7 @@
 
 			{#if $errors.createdAt}
 				<div class="errors">
-						<span class="invalid">{$errors.createdAt}</span>
+					<span class="invalid">{$errors.createdAt}</span>
 				</div>
 			{/if}
 
@@ -118,24 +122,18 @@
 				<h3 transition:flipboard|local={{ delay: 300, duration: 400 }} style="margin-block: 0px;">
 					{$page.url.origin}/{$form.slug}
 				</h3>
-				<button
-					use:copy={`${$page.url.origin}/${$form.slug}`}
-					on:svelte-copy={() => {
+				<CopyButton 
+					text={`${$page.url.origin}/${$form.slug}`} 
+					onCopy={() => {
 						copied = true;
 						setTimeout(() => (copied = false), 2000);
 					}}
-					on:svelte-copy:error={(event) => alert(`There was an error: ${event.detail.message})`)}
-				>
-					{#if copied}
-						Copied!
-					{:else}
-						Copy
-					{/if}
-				</button>
+				onError={(event: CustomEvent) => alert(`There was an error: ${event.detail.message})`)}
+				{copied}  />
 			</div>
 			<div>
 				<button
-					on:click={() => {
+					onclick={() => {
 						reset();
 						created = false;
 					}}
