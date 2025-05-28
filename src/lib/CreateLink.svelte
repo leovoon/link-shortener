@@ -150,7 +150,7 @@
 		position: relative;
 		max-width: 640px;
 		width: 90vw;
-		height: 360px;
+		height: auto;
 		max-height: 65vh;
 		display: grid;
 		margin: 0 auto;

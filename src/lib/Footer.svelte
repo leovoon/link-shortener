@@ -8,7 +8,7 @@
 			© {`${new Date().getFullYear()}`}
 		</div>
 		<div class="ml-auto">
-			<a href="https://github.com/leovoon/link-shortener" target="_blank" rel="noreferrer"
+			<a aria-label="Github" href="https://github.com/leovoon/link-shortener" target="_blank" rel="noreferrer"
 				><svg
 					class="fill-current"
 					xmlns="http://www.w3.org/2000/svg"
@@ -28,9 +28,10 @@
 	footer {
 		justify-content: center;
 		display: flex;
-		margin-top: 20vh;
-		width: 100vw;
+		width: 100%;
 		color: gray;
+		position: fixed;
+		bottom: 0;
 	}
 
 	a {
